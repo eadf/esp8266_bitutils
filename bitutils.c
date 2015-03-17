@@ -58,17 +58,24 @@ bitutils_getBit(uint8_t *data, uint16_t bitNumber) {
 void ICACHE_FLASH_ATTR
 bitutils_printBool(uint8_t *data, uint16_t from, uint16_t to) {
   uint16_t i = 0;
+  uint16_t delta = 0;
   if (from < to) {
-    for (i=from; i<=to; i++) {
-      os_printf(bitutils_getBit(data,i)?"1":"0");
-      if(i>0 && (i+1)%8==0) {
+    // ascending order
+    delta = to - from;
+    for (i=0; i<=delta; i++) {
+      os_printf(bitutils_getBit(data,from+i)?"1":"0");
+      //os_printf(" %d=%s", from+i, bitutils_getBit(data,from+i)?"1":"0");
+      if(i<delta && (from+i+1)%8==0) {
         os_printf(" ");
       }
     }
   } else {
-    for (i=from; i>=to; i--) {
-      os_printf(bitutils_getBit(data,i)?"1":"0");
-      if(i>0 && (i+1)%8==0) {
+    // descending order
+    delta = from - to;
+    for (i=0; i<=delta; i++) {
+      os_printf(bitutils_getBit(data,from-i)?"1":"0");
+      //os_printf(" %d=%s", from-i, bitutils_getBit(data,from-i)?"1":"0");
+      if(i<delta && (from-i)%8==0) {
         os_printf(" ");
       }
     }
